@@ -1,0 +1,10 @@
+[package]
+name = "xrusty"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+xrust = "1.2.5"
+xrust-md = "0.1.0"
+xrust-net = "0.1.0"
+url = "2.4.1"
