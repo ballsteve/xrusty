@@ -1,7 +1,13 @@
 [package]
 name = "xrusty"
 description = "Parse documents and transform using χrust"
+keywords = ["xml", "xpath", "xslt", "markdown"]
+authors = ["Steve Ball <Steve.Ball@explain.com.au>"]
 version = "0.1.0"
+license = "Apache-2.0"
+repository = "https://gitlab.gnome.org/balls/xrusty.git"
+documentation = "https://docs.rs/xrusty/"
+readme = "README.md"
 edition = "2024"
 
 [dependencies]
