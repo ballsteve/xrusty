@@ -4,10 +4,10 @@
   <xsl:template match="child::article">
     <HTML><BODY><xsl:apply-templates/></BODY></HTML>
   </xsl:template>
-  <xsl:template match="child::sect1">
+  <xsl:template match="child::heading1">
     <H1><xsl:apply-templates/></H1>
   </xsl:template>
-  <xsl:template match="child::sect2">
+  <xsl:template match="child::heading2">
     <H2><xsl:apply-templates/></H2>
   </xsl:template>
   <xsl:template match="child::para">
