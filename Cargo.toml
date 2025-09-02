@@ -1,10 +1,12 @@
 [package]
 name = "xrusty"
+description = "Parse documents and transform using χrust"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 xrust = "1.2.5"
-xrust-md = "0.1.0"
+xrust-md = "0.1.1"
 xrust-net = "0.1.0"
 url = "2.4.1"
+clap = { version = "4.5.46", features = ["derive"] }
