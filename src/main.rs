@@ -5,6 +5,7 @@ use std::io::Read;
 use std::path::Path;
 use std::process::exit;
 use url::Url;
+#[allow(unused_imports)]
 use xrust::item::{Item, Node, SequenceTrait};
 use xrust::output::OutputDefinition;
 use xrust::parser::xml::parse as xmlparse;
