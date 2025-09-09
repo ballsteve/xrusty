@@ -21,8 +21,35 @@ cd xrusty
 cargo install --path .
 ```
 
-This will install xrusty into $HOME/.cargo/bin. To install into a different location use the --root option, see ```cargo help install```.
+This will install ```xrusty``` into $HOME/.cargo/bin. To install into a different location use the --root option, see ```cargo help install```.
 
 ## Usage
 
-Coming soon!
+χrusty takes one or more documents and performs a series of operations on them. The result of processing is then sent to the standard output. The documents may be XML or [Markdown](https://gitlab.gnome.org/World/Rust/markup-rs/xrust-md/).
+
+The operations performed are specified with command line arguments. Two operations don't need to be explicitly specified: parsing the document and serialising the result.
+
+The ```--help``` option displays the command usage:
+
+```
+xrusty --help
+
+Usage: xrusty [OPTIONS] [DOCS]...
+
+Arguments:
+  [DOCS]...  Documents
+
+Options:
+  -t, --transform <TRANSFORM>  Transform source documents using a XSLT stylesheet
+  -h, --help                   Print help
+  -V, --version                Print version
+
+```
+
+For example:
+
+```
+xrusty --transform xsl/style.xsl xml/source.xml
+```
+
+This command will read the XML document ```xml/source.xml``` and transform it using the XSL stylesheet ```xsl/style.xsl```. The result of the transformation will be output to stdout.
