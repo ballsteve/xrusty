@@ -53,3 +53,10 @@ xrusty --transform xsl/style.xsl xml/source.xml
 ```
 
 This command will read the XML document ```xml/source.xml``` and transform it using the XSL stylesheet ```xsl/style.xsl```. The result of the transformation will be output to stdout.
+
+## Change Log
+
+| Release | Notes |
+|---------|-------|
+| 0.2.0   | Synchronise with χrust 1.3.0 |
+| 0.1.0   | Initial release |

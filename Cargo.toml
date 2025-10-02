@@ -3,7 +3,7 @@ name = "xrusty"
 description = "Parse documents and transform using χrust"
 keywords = ["xml", "xpath", "xslt", "markdown"]
 authors = ["Steve Ball <Steve.Ball@explain.com.au>"]
-version = "0.1.0"
+version = "0.2.0"
 license = "Apache-2.0"
 repository = "https://gitlab.gnome.org/balls/xrusty.git"
 documentation = "https://docs.rs/xrusty/"
@@ -11,8 +11,11 @@ readme = "README.md"
 edition = "2024"
 
 [dependencies]
-xrust = "1.2.5"
-xrust-md = "0.1.1"
-xrust-net = "0.1.0"
-url = "2.4.1"
+xrust = "1.3.0"
+#xrust = { path = "../xrust" }
+xrust-md = "0.2"
+#xrust-md = { path = "../xrust-md" }
+xrust-net = "0.2"
+#xrust-net = { path = "../xrust-net" }
+url = "2.5.7"
 clap = { version = "4.5.46", features = ["derive"] }
