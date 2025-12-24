@@ -58,5 +58,6 @@ This command will read the XML document ```xml/source.xml``` and transform it us
 
 | Release | Notes |
 |---------|-------|
+| 0.2.1   | Synchronise with χrust 2.0.1 |
 | 0.2.0   | Synchronise with χrust 1.3.0 |
 | 0.1.0   | Initial release |

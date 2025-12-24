@@ -8,6 +8,7 @@ use url::Url;
 #[allow(unused_imports)]
 use xrust::item::{Item, Node, SequenceTrait};
 use xrust::output::OutputDefinition;
+use xrust::parser::ParseError;
 use xrust::parser::xml::parse as xmlparse;
 use xrust::parser::xpath::parse as xpathparse;
 use xrust::transform::context::{ContextBuilder, StaticContextBuilder};
@@ -20,7 +21,11 @@ use xrust_md::md::parse as mdparse;
 
 fn make_from_str(s: &str) -> Result<RNode, Error> {
     let d = RNode::new_document();
-    xmlparse(d.clone(), s.trim(), None)
+    xmlparse(
+        d.clone(),
+        s.trim(),
+        Some(|_: &_| Err(ParseError::Notimplemented)),
+    )
 }
 
 fn main() {
@@ -81,11 +86,15 @@ fn main() {
                 exit(2)
             });
 
-        let _: Result<RNode, Error> =
-            xmlparse(style.clone(), stylexml.trim(), None).or_else(|why| {
-                eprintln!("failed to parse XSL stylesheet due to {}", why);
-                exit(3)
-            });
+        let _: Result<RNode, Error> = xmlparse(
+            style.clone(),
+            stylexml.trim(),
+            Some(|_: &_| Err(ParseError::Notimplemented)),
+        )
+        .or_else(|why| {
+            eprintln!("failed to parse XSL stylesheet due to {}", why);
+            exit(3)
+        });
 
         let pwd = std::env::current_dir().expect("unable to get current directory");
         let pwds = pwd
@@ -113,8 +122,12 @@ fn main() {
             .build()
             .dispatch(
                 &mut stctxt,
-                &xpathparse("/xsl:stylesheet/xsl:output/@method", Some(style.clone()))
-                    .expect("unable to parse output method XPath"),
+                &xpathparse(
+                    "/xsl:stylesheet/xsl:output/@method",
+                    Some(style.clone()),
+                    None,
+                )
+                .expect("unable to parse output method XPath"),
             ) {
             Ok(m) => {
                 if m.len() > 0 {
@@ -149,7 +162,12 @@ fn main() {
         // Parse as XML or Markdown
         match srcpath.extension().map(|o| o.to_str()) {
             Some(Some("xml")) => {
-                xmlparse(sourcedoc.clone(), srcraw.as_str().trim(), None).unwrap_or_else(|why| {
+                xmlparse(
+                    sourcedoc.clone(),
+                    srcraw.as_str().trim(),
+                    Some(|_: &_| Err(ParseError::Notimplemented)),
+                )
+                .unwrap_or_else(|why| {
                     eprintln!("failed to parse XML due to {}", why);
                     exit(7)
                 });
@@ -162,7 +180,11 @@ fn main() {
             }
             _ => {
                 // Try XML, if that fails try MD, otherwise fail
-                if let Err(why) = xmlparse(sourcedoc.clone(), srcraw.as_str().trim(), None) {
+                if let Err(why) = xmlparse(
+                    sourcedoc.clone(),
+                    srcraw.as_str().trim(),
+                    Some(|_: &_| Err(ParseError::Notimplemented)),
+                ) {
                     eprintln!("failed to parse XML due to {}", why);
                     exit(9)
                 } else {
