@@ -1141,6 +1141,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "qualname"
+version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7ca141ff6dd6af1bf241aa43eac7491d69c9be5059574708495e61948ab4bac"
+
+[[package]]
 name = "quote"
 version = "1.0.40"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2253,9 +2259,9 @@ dependencies = [
 
 [[package]]
 name = "xrust"
-version = "1.3.0"
+version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1dd041492c05a64e12ddbaac185bf25a3a81b99dfffd8a1d7faf1e87d9860360"
+checksum = "c52a5a42daabeda013528d431e1101baa933045c267009d7d2454404b11fa496"
 dependencies = [
  "chrono",
  "english-numbers",
@@ -2264,6 +2270,7 @@ dependencies = [
  "italian_numbers",
  "lexers",
  "pkg-version",
+ "qualname",
  "regex",
  "rust_decimal",
  "rust_decimal_macros",
@@ -2273,18 +2280,19 @@ dependencies = [
 
 [[package]]
 name = "xrust-md"
-version = "0.2.0"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c242950cd81f31483ab8b3ca9afd44c5743e475c569c1cddc6bf0ef4a3a29763"
+checksum = "deaf0a390b9ba6e7a637dfb08b4ec17352210d179bbade009f910d1b1d9eabd8"
 dependencies = [
+ "qualname",
  "xrust",
 ]
 
 [[package]]
 name = "xrust-net"
-version = "0.2.0"
+version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34cdf734768ee30bc9357e32ec2e4d236bb17ad92d229017df751d4a864922c7"
+checksum = "112c2bcf903355a8601589d1d70b7f6a861584f0c5ebfbb6bd1dd1e7176c6b71"
 dependencies = [
  "reqwest",
  "tokio",
@@ -2294,7 +2302,7 @@ dependencies = [
 
 [[package]]
 name = "xrusty"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "clap",
  "url",
