@@ -8,6 +8,17 @@ A command line interface for the [χrust crate](https://gitlab.gnome.org/World/R
 
 χrusty allows you to transform a document - XML, JSON, or Markdown - using an XSL stylesheet (XSLT) to produce a result document.
 
+## Security Warning
+
+At present, χrusty does not implement any security policies. It is NOT recommended that χrusty be used with any untrusted, unknown, or unverified XML documents or XSL stylesheets.
+
+χrusty will shortly be released with two security policies:
+
+* No external resources will be loaded
+* No limits on resouce usage
+
+More fine-grained security policies will be released later.
+
 ## Installation
 
 1. [Install Rust](https://www.rust-lang.org/tools/install)
