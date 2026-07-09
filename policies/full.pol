@@ -4,7 +4,7 @@
   <sec:feature name='net:access'>
     <sec:permitted/>
   </sec:feature>
-  <sec:feature name='net:maximum-depth'>
+  <sec:feature name='net:maximum-size'>
     <sec:permitted/>
   </sec:feature>
   <sec:feature name='tr:maximum-depth'>

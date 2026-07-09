@@ -6,7 +6,7 @@ pub static POLICY_NONE: &'static str =
   <sec:feature name='net:access'>
     <sec:not-permitted/>
   </sec:feature>
-  <sec:feature name='net:maximum-depth'>
+  <sec:feature name='net:maximum-size'>
     <sec:not-permitted/>
   </sec:feature>
 </sec:policy>";
@@ -18,7 +18,7 @@ pub static POLICY_FULL: &'static str =
   <sec:feature name='net:access'>
     <sec:permitted/>
   </sec:feature>
-  <sec:feature name='net:maximum-depth'>
+  <sec:feature name='net:maximum-size'>
     <sec:permitted/>
   </sec:feature>
   <sec:feature name='tr:maximum-depth'>

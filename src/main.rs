@@ -63,7 +63,6 @@ fn main() {
                     eprintln!("failed to parse security policy \"none\" due to {}", why);
                     exit(16)
                 });
-                eprintln!("security policy \"none\" in force")
             }
             "full" => {
                 let _: RNode = xmlparse(
@@ -75,7 +74,6 @@ fn main() {
                     eprintln!("failed to parse security policy \"full\" due to {}", why);
                     exit(16)
                 });
-                eprintln!("security policy \"full\" in force")
             }
             _ => {
                 eprintln!("unknown security policy \"{}\"", policyname);
