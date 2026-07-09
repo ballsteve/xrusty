@@ -1,16 +1,18 @@
-use clap::Parser;
 /// Read an XML document, an XSL stylesheet and perform the transformation
+use clap::Parser;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 use std::process::exit;
+use std::rc::Rc;
 use url::Url;
 #[allow(unused_imports)]
 use xrust::item::{Item, Node, SequenceTrait};
 use xrust::output::OutputDefinition;
-use xrust::parser::ParseError;
 use xrust::parser::xml::parse as xmlparse;
 use xrust::parser::xpath::parse as xpathparse;
+use xrust::parser::ParseError;
+use xrust::security::SecurityPolicy;
 use xrust::transform::context::{ContextBuilder, StaticContextBuilder};
 use xrust::trees::smite::RNode;
 use xrust::xdmerror::{Error, ErrorKind};
@@ -18,6 +20,8 @@ use xrust::xslt::from_document;
 use xrust_net::resolve;
 
 use xrust_md::md::parse as mdparse;
+
+mod security;
 
 fn make_from_str(s: &str) -> Result<RNode, Error> {
     let d = RNode::new_document();
@@ -35,13 +39,63 @@ fn main() {
         /// Transform source documents using a XSLT stylesheet
         #[arg(short, long)]
         transform: Option<String>,
+        /// The security policy in force. Default is 'none'
+        #[arg(short, long)]
+        policy: Option<String>,
         /// Documents
         docs: Vec<String>,
         // TODO: output (with % substitutions)
         // TODO: validate
-        // TODO: security policies
     }
     let args = Args::parse();
+
+    // Security policy
+    let poldoc = RNode::new_document();
+    if let Some(policyname) = args.policy {
+        match policyname.as_str() {
+            "none" => {
+                let _: RNode = xmlparse(
+                    poldoc.clone(),
+                    security::POLICY_NONE,
+                    Some(|_: &_| Err(ParseError::Notimplemented)),
+                )
+                .unwrap_or_else(|why| {
+                    eprintln!("failed to parse security policy \"none\" due to {}", why);
+                    exit(16)
+                });
+            }
+            "full" => {
+                let _: RNode = xmlparse(
+                    poldoc.clone(),
+                    security::POLICY_FULL,
+                    Some(|_: &_| Err(ParseError::Notimplemented)),
+                )
+                .unwrap_or_else(|why| {
+                    eprintln!("failed to parse security policy \"full\" due to {}", why);
+                    exit(16)
+                });
+            }
+            _ => {
+                eprintln!("unknown security policy \"{}\"", policyname);
+                exit(15)
+            }
+        }
+    } else {
+        // Default is none
+        let _: RNode = xmlparse(
+            poldoc.clone(),
+            security::POLICY_NONE,
+            Some(|_: &_| Err(ParseError::Notimplemented)),
+        )
+        .unwrap_or_else(|why| {
+            eprintln!("failed to parse security policy \"none\" due to {}", why);
+            exit(16)
+        });
+    }
+    let policy = Rc::new(poldoc.to_policy().unwrap_or_else(|why| {
+        eprintln!("failed to compile security policy due to {}", why);
+        exit(17)
+    }));
 
     // Default output method is XML.
     // If a stylesheet is specified then it may set a different method.
@@ -109,7 +163,7 @@ fn main() {
                         .expect("unable to parse stylesheet URL"),
                 ),
                 |s| make_from_str(s),
-                |url| resolve(url),
+                |url| resolve(url, &policy),
             )
             .unwrap_or_else(|why| {
                 eprintln!("failed to compile XSL stylesheet due to {}", why);

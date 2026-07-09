@@ -1,0 +1,27 @@
+//! Support for security policies
+
+pub static POLICY_NONE: &'static str =
+    "<sec:policy name='none' xmlns:sec='http://gitlab.gnome.org/World/Rust/markup-rs/Security'
+    xmlns:net='http://gitlab.gnome.org/World/Rust/markup-rs/xrust-net/security'>
+  <sec:feature name='net:access'>
+    <sec:not-permitted/>
+  </sec:feature>
+  <sec:feature name='net:maximum-size'>
+    <sec:not-permitted/>
+  </sec:feature>
+</sec:policy>";
+
+pub static POLICY_FULL: &'static str =
+    "<sec:policy name='full' xmlns:sec='http://gitlab.gnome.org/World/Rust/markup-rs/Security'
+    xmlns:net='http://gitlab.gnome.org/World/Rust/markup-rs/xrust-net/security'
+    xmlns:tr='http://gitlab.gnome.org/World/Rust/markup-rs/xrust/transform'>
+  <sec:feature name='net:access'>
+    <sec:permitted/>
+  </sec:feature>
+  <sec:feature name='net:maximum-size'>
+    <sec:permitted/>
+  </sec:feature>
+  <sec:feature name='tr:maximum-depth'>
+    <sec:permitted/>
+  </sec:feature>
+</sec:policy>";

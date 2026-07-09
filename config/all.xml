@@ -1,0 +1,30 @@
+<!-- A security policy that allows unconstrained access to all external resources -->
+<xsp:security
+    xmlns:xsp="https://gitlab.gnome.org/World/Rust/markup-rs/xrusty/security"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+>
+  <xsp:policy name="default">
+    <xsp:template domain="resources" name="get">
+      <xsl:param name="url" />
+      <xsl:sequence select="true()" />
+    </xsp:template>
+    <!--<xsp:template domain="resources" name="post">
+      <xsl:param name="url"/>
+      <xsl:sequence select="true()"/>
+    </xsp:template>-->
+    <xsp:value domain="resources" name="post">yes</xsp:value>
+    <xsp:value
+            domain="resources"
+            name="put"
+        >1</xsp:value> <!-- 0, no, false map to false(); 1, yes, true map to true() -->
+    <xsp:value
+            domain="xml"
+            name="entity-size-max"
+        >unlimited</xsp:feature> <!-- special value meaning value is unconstrained -->
+    <xsp:value domain="xml" name="entity-depth-max">unlimited</xsp:feature>
+    <xsp:value
+            domain="transform"
+            name="recursion-limit-max"
+        >unlimited</xsp:feature>
+  </xsp:policy>
+</xsp:security>
