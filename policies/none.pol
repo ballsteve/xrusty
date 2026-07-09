@@ -1,0 +1,9 @@
+<sec:policy name='none' xmlns:sec='http://gitlab.gnome.org/World/Rust/markup-rs/Security'
+    xmlns:net='http://gitlab.gnome.org/World/Rust/markup-rs/xrust-net/security'>
+  <sec:feature name='net:access'>
+    <sec:not-permitted/>
+  </sec:feature>
+  <sec:feature name='net:maximum-depth'>
+    <sec:not-permitted/>
+  </sec:feature>
+</sec:policy>

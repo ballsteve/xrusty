@@ -1,9 +1,9 @@
 [package]
 name = "xrusty"
-description = "Parse documents and transform using χrust"
+description = "Command-line application to parse documents and transform using χrust"
 keywords = ["xml", "xpath", "xslt", "markdown"]
 authors = ["Steve Ball <Steve.Ball@explain.com.au>"]
-version = "0.2.1"
+version = "0.3.0"
 license = "Apache-2.0"
 repository = "https://gitlab.gnome.org/balls/xrusty.git"
 documentation = "https://docs.rs/xrusty/"
@@ -11,11 +11,11 @@ readme = "README.md"
 edition = "2024"
 
 [dependencies]
-xrust = "2.0.1"
+xrust = "2.2"
 #xrust = { path = "../xrust" }
 xrust-md = "0.2.2"
 #xrust-md = { path = "../xrust-md" }
-xrust-net = "0.2.2"
+xrust-net = "0.3"
 #xrust-net = { path = "../xrust-net" }
 url = "2.5.7"
 clap = { version = "4.5.46", features = ["derive"] }

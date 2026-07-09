@@ -8,16 +8,24 @@ A command line interface for the [χrust crate](https://gitlab.gnome.org/World/R
 
 χrusty allows you to transform a document - XML, JSON, or Markdown - using an XSL stylesheet (XSLT) to produce a result document.
 
-## Security Warning
+## Security
 
-At present, χrusty does not implement any security policies. It is NOT recommended that χrusty be used with any untrusted, unknown, or unverified XML documents or XSL stylesheets.
+χrusty allows you to set a security policy. A security policy is used to control whether χrusty can access local or remote resources, and whether stylesheets can use scarce resources. The policy should be chosen carefully, especially if χrusty is to be used with any untrusted, unknown, or unverified XML documents or XSL stylesheets.
 
-χrusty will shortly be released with two security policies:
+NB. security policies apply to any resources loaded by an XML document or XSL stylesheet. Any documents or stylesheets specified on the command line are not limited by the security policy in force.
 
-* No external resources will be loaded
-* No limits on resouce usage
+χrust and χrusty-net provide a number of security features, as follows:
 
-More fine-grained security policies will be released later.
+* χrust: *maximum-depth* limits how deeply a stylesheet can evaluate templates. Setting a limit prevents infinite loops, which is a denial-of-service attack.
+* χrust-net: *access* controls whether a resource (a file or URL) may be accessed at all. The default is to not allow access to any resources. This may be used to prevent exfiltration of data.
+* χrust-net: *maximum-size* limits the maximum size of a resource. Te default is to not allow any resource. This may be used to prevent very large documents being downloaded, which is a denial-of-service attack.
+
+χrusty has two security policies:
+
+* *none* - No external resources may be accessed
+* *full* - No limits on resource usage
+
+Contact the maintainer for more fine-grained security policies.
 
 ## Installation
 
@@ -52,6 +60,7 @@ Arguments:
 
 Options:
   -t, --transform <TRANSFORM>  Transform source documents using a XSLT stylesheet
+  -p, --policy <POLICY>        The security policy to use
   -h, --help                   Print help
   -V, --version                Print version
 
@@ -60,15 +69,16 @@ Options:
 For example:
 
 ```
-xrusty --transform xsl/style.xsl xml/source.xml
+xrusty --policy full --transform xsl/style.xsl xml/source.xml
 ```
 
-This command will read the XML document ```xml/source.xml``` and transform it using the XSL stylesheet ```xsl/style.xsl```. The result of the transformation will be output to stdout.
+This command will read the XML document ```xml/source.xml``` and transform it using the XSL stylesheet ```xsl/style.xsl```. The result of the transformation will be output to stdout. The _full_ security policy will be in force.
 
 ## Change Log
 
 | Release | Notes |
 |---------|-------|
+| 0.3.0   | Add security policies |
 | 0.2.1   | Synchronise with χrust 2.0.1 |
 | 0.2.0   | Synchronise with χrust 1.3.0 |
 | 0.1.0   | Initial release |
