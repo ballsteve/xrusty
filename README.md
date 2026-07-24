@@ -61,6 +61,7 @@ Arguments:
 Options:
   -t, --transform <TRANSFORM>  Transform source documents using a XSLT stylesheet
   -p, --policy <POLICY>        The security policy to use
+      --parameter <PARAMETER>  A stylesheet parameter in the form name=value. The value will be a string literal
   -h, --help                   Print help
   -V, --version                Print version
 
@@ -74,10 +75,13 @@ xrusty --policy full --transform xsl/style.xsl xml/source.xml
 
 This command will read the XML document ```xml/source.xml``` and transform it using the XSL stylesheet ```xsl/style.xsl```. The result of the transformation will be output to stdout. The _full_ security policy will be in force.
 
+Stylesheet parameters may be specified using the ```--parameter``` option. There can be more than one parameter specified. The parameter name is separated from the value with an '=' character. The parameter name must be a valid XML Name.
+
 ## Change Log
 
 | Release | Notes |
 |---------|-------|
+| 0.4.0   | Add stylesheet parameters |
 | 0.3.0   | Add security policies |
 | 0.2.1   | Synchronise with χrust 2.0.1 |
 | 0.2.0   | Synchronise with χrust 1.3.0 |

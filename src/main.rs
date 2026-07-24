@@ -9,12 +9,13 @@ use url::Url;
 #[allow(unused_imports)]
 use xrust::item::{Item, Node, SequenceTrait};
 use xrust::output::OutputDefinition;
+use xrust::parser::ParseError;
 use xrust::parser::xml::parse as xmlparse;
 use xrust::parser::xpath::parse as xpathparse;
-use xrust::parser::ParseError;
 use xrust::security::SecurityPolicy;
 use xrust::transform::context::{ContextBuilder, StaticContextBuilder};
 use xrust::trees::smite::RNode;
+use xrust::value::Value;
 use xrust::xdmerror::{Error, ErrorKind};
 use xrust::xslt::from_document;
 use xrust_net::resolve;
@@ -34,7 +35,7 @@ fn make_from_str(s: &str) -> Result<RNode, Error> {
 
 fn main() {
     #[derive(Parser, Debug)]
-    #[command(version, about = "", long_about = None)]
+    #[command(version, about = "Produce result documents from XML or MarkDown using an XSL stylesheet", long_about = None)]
     struct Args {
         /// Transform source documents using a XSLT stylesheet
         #[arg(short, long)]
@@ -42,12 +43,32 @@ fn main() {
         /// The security policy in force. Default is 'none'
         #[arg(short, long)]
         policy: Option<String>,
+        /// A stylesheet parameter in the form name=value. The value will be a string literal.
+        #[arg(long)]
+        parameter: Vec<String>,
         /// Documents
         docs: Vec<String>,
         // TODO: output (with % substitutions)
         // TODO: validate
     }
     let args = Args::parse();
+
+    // Parse and check parameter arguments.
+    // The name and value are separated by '='.
+    // The name must be an XML Name.
+    // Everything after the first '=' is the value.
+    let parameters: Vec<(&str, Item<RNode>)> = args
+        .parameter
+        .iter()
+        .map(|p| {
+            if let Some(e) = p.find('=') {
+                (&p[0..e], Item::Value(Rc::new(Value::from(&p[e + 1..]))))
+            } else {
+                eprintln!("parameter \"{}\" does not contain '='", p);
+                exit(18)
+            }
+        })
+        .collect();
 
     // Security policy
     let poldoc = RNode::new_document();
@@ -262,6 +283,11 @@ fn main() {
                 ctxt.context(vec![Item::Node(sourcedoc.clone())], 0);
                 ctxt.result_document(rd.clone());
 
+                // Add parameters
+                parameters
+                    .iter()
+                    .for_each(|prm| ctxt.var_push(prm.0.to_string(), vec![prm.1.clone()]));
+
                 ctxt.populate_key_values(&mut stctxt, sourcedoc)
                     .unwrap_or_else(|why| {
                         eprintln!("unable to populate key values due to {}", why);
@@ -281,7 +307,7 @@ fn main() {
                     println!("{}", i.to_xml_with_options(&od));
                 }
                 "text" => {
-                    println!("{}", i.to_string())
+                    print!("{}", i.to_string())
                 }
                 "html" => {
                     eprintln!("HTML output method is not supported");
@@ -293,5 +319,8 @@ fn main() {
                 }
             }
         });
+        if output_method == "text" {
+            println!("")
+        }
     });
 }
